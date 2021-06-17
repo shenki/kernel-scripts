@@ -59,5 +59,5 @@ truncate --size 16G ${MMC_IMAGE}
 
 echo "Image $MMC_IMAGE created. Boot with:"
 echo ""
-echo "qemu-system-arm -nographic -M rainier-bmc -drive file=mmc.img,if=mmc,index=2,format=raw"
+echo "qemu-system-arm -nographic -M rainier-bmc -drive file=mmc.img,if=sd,index=2,format=raw"
 echo ""
