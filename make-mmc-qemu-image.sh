@@ -56,8 +56,11 @@ echo "Creating image..."
 #cat mmc-bootarea.img mmc-bootarea.img obmc-phosphor-image.wic > ${MMC_IMAGE}
 cat image-u-boot image-u-boot ${MMC_FILE%".xz"} > ${MMC_IMAGE}
 truncate --size 16G ${MMC_IMAGE}
+echo "Compressing image..."
+qemu-img convert ${MMC_IMAGE} -O qcow2 -c ${MMC_IMAGE}.qcow2
+rm ${MMC_IMAGE}
 
-echo "Image $MMC_IMAGE created. Boot with:"
+echo "Image ${MMC_IMAGE}.qcow2 created. Boot with:"
 echo ""
-echo "qemu-system-arm -nographic -M rainier-bmc -drive file=mmc.img,if=sd,index=2,format=raw"
+echo "qemu-system-arm -nographic -M rainier-bmc -drive file=${MMC_IMAGE}.qcow2,if=sd,index=2"
 echo ""
