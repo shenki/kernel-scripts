@@ -8,6 +8,7 @@ CONFIG=ast2600_openbmc_spl_defconfig
 IMG="$OBJ/test.img"
 MACHINE=ast2600-evb
 KEYS=$HOME/dev/openbmc/openbmc/meta-aspeed/recipes-kernel/linux/linux-aspeed/
+KERNEL_FIT=/srv/tftp/rain-sec
 
 set -x
 #make O="$OBJ" -s clean
@@ -15,8 +16,7 @@ make O="$OBJ" -s $CONFIG
 make O="$OBJ" -s -j8 DEVICE_TREE=$MACHINE CROSS_COMPILE=arm-linux-gnueabi- ARCH=arm
 { set +x; } 2>/dev/null
 
-size "$OBJ/u-boot"
-size "$OBJ/spl/u-boot-spl" | tail -n1
+size "$OBJ/u-boot" "$OBJ/spl/u-boot-spl"
 
 cat > u-boot.its << EOF
 /dts-v1/;
@@ -55,7 +55,7 @@ set -x
 cp "$OBJ/spl/u-boot-spl.bin" "$OBJ/test.img"
 truncate -s 64M "$OBJ/test.img"
 dd status=none if="$OBJ/u-boot.itb" of="$OBJ/test.img" conv=notrunc seek=64 bs=1024
-#dd status=none if="$OBJ/u-boot.img" of="$OBJ/test.img" conv=notrunc seek=64 bs=1024
+dd status=none if="$KERNEL_FIT" of="$OBJ/test.img" conv=notrunc seek=1024 bs=1024
 { set +x; } 2>/dev/null
 
 echo

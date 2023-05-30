@@ -1,16 +1,15 @@
 #!/bin/bash
 
-set -ex
+set -e
 
-OBJ=ast2400-obj
-CONFIG=evb-ast2400_defconfig
-: ${DTB:=ast2400-evb}
+OBJ=romulus-obj
+CONFIG=evb-ast2500_defconfig
 IMG="$OBJ/test.img"
-QEMU_MACHINE=palmetto-bmc
+QEMU_MACHINE=romulus-bmc
 
 make -j8 O="$OBJ" -s clean
-make -j8 O="$OBJ" -j8 -s $CONFIG
-CROSS_COMPILE=arm-linux-gnueabi- ARCH=arm make -j8 O="$OBJ"  -j8 DEVICE_TREE="$DTB" -s
+make -j8 O="$OBJ" -s $CONFIG
+CROSS_COMPILE=arm-linux-gnueabi- ARCH=arm make -j8 O="$OBJ" DEVICE_TREE=ast2500-romulus -s
 size "$OBJ/u-boot"
 
 cp "$OBJ/u-boot.bin" "$IMG"

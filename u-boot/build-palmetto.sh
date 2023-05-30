@@ -1,16 +1,16 @@
 #!/bin/bash
 
-set -ex
+set -e
 
-OBJ=ast2400-obj
+OBJ=palmetto-obj
 CONFIG=evb-ast2400_defconfig
-: ${DTB:=ast2400-evb}
 IMG="$OBJ/test.img"
+MACHINE=ast2400-palmetto
 QEMU_MACHINE=palmetto-bmc
 
 make -j8 O="$OBJ" -s clean
-make -j8 O="$OBJ" -j8 -s $CONFIG
-CROSS_COMPILE=arm-linux-gnueabi- ARCH=arm make -j8 O="$OBJ"  -j8 DEVICE_TREE="$DTB" -s
+make -j8 O="$OBJ" -s $CONFIG
+make CROSS_COMPILE="ccache arm-linux-gnueabi-" -j8 O="$OBJ" DEVICE_TREE=$MACHINE -s
 size "$OBJ/u-boot"
 
 cp "$OBJ/u-boot.bin" "$IMG"

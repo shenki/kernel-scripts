@@ -4,13 +4,13 @@
 set -e
 
 OBJ=ast2600-obj
-CONFIG=evb-ast2600_defconfig
+CONFIG=evb-ast2600-spl_defconfig
 IMG="$OBJ/test.img"
 MACHINE=ast2600-evb
 
 set -x
-#make O="$OBJ" -s clean
-#make O="$OBJ" -s $CONFIG
+make O="$OBJ" -s clean
+make O="$OBJ" -s $CONFIG
 make O="$OBJ" -s -j8 DEVICE_TREE=$MACHINE CROSS_COMPILE=arm-linux-gnueabi- ARCH=arm
 { set +x; } 2>/dev/null
 

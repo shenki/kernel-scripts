@@ -6,7 +6,7 @@ CONFIG=ast2600_openbmc_spl_emmc_defconfig
 make -j8 O=$OBJ -s clean
 make -j8 O=$OBJ -j8 -s ast2600_openbmc_spl_emmc_defconfig
 CROSS_COMPILE="ccache arm-linux-gnueabi-" ARCH=arm make -j8 O=$OBJ  -j8 DEVICE_TREE=ast2600-rainier EXT_DTB=$HOME/dev/kernels/misc/u-boot-p10bmc.dtb -s
-size $OBJ/spl/u-boot-spl
+size $OBJ/u-boot $OBJ/spl/u-boot-spl
 
 ./$OBJ/tools/mkimage -f u-boot.its -r -E -k ~/dev/openbmc/openbmc/meta-aspeed/recipes-kernel/linux/linux-aspeed/ -K $OBJ/spl/u-boot-spl.dtb u-boot-signed.img
 
